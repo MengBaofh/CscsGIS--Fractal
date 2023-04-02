@@ -10,3 +10,6 @@ This is a software uesed to simulate the complexity (fractal dimension) of a con
 QQ-Mail: 825585398@qq.com  
 CUG-Mail(rarely used): mengbaofh@cug.edu.cn  
 Please contact me if you have any questions!  
+# Attention
+Without permission, do not reprint!  
+*未经允许，禁止转载！  
