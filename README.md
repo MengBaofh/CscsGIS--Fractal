@@ -11,5 +11,5 @@ QQ-Mail: 825585398@qq.com
 CUG-Mail(rarely used): mengbaofh@cug.edu.cn  
 Please contact me if you have any questions!  
 # Attention
-Without permission, do not reprint!  
-*未经允许，禁止转载！  
+We have obtained computer software copyright, without permission, prohibited to reprint!  
+*已取得计算机软件著作权，未经允许，禁止转载！  
