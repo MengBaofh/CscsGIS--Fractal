@@ -6,3 +6,7 @@ This is a software uesed to simulate the complexity (fractal dimension) of a con
 *该软件使用IDW算法计算分形维数，然后还可以绘制分形维数分布图  
 2. It can read the vector data and superimpose it on the fractal dimension distribution diagram, and can also read and display the property sheet.  
 *该软件可以读取矢量数据并将其叠加于分形维数分布图上，还可以读取并显示矢量的属性表  
+# Mail
+QQ-Mail: 825585398@qq.com  
+CUG-Mail(rarely used): mengbaofh@cug.edu.cn  
+Please contact me if you have any questions!  
