@@ -12,6 +12,7 @@ def StopAll():
         exit()
 
 
+
 if __name__ == '__main__':
     # IOutPutDir = 'ImageOutPut'
     # try:  # 创建输出文件夹
