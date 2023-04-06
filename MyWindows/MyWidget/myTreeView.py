@@ -59,7 +59,6 @@ class MainRightTreeView(Treeview):
     def updateRightTreeView(self):
         """
         更新右侧treeview
-        :param frame11: 右侧treeview的父容器
         :return:
         """
         for treeView in self.master.winfo_children():

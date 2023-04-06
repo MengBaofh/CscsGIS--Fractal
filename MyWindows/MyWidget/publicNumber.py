@@ -10,7 +10,6 @@ from tkinter.messagebox import *
 from PIL import ImageTk, Image
 from matplotlib import pyplot as plt
 from MyWindows.myThreading import AnalyseThread
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from MyAlgorithm.IDW import IDW
 
 
@@ -368,8 +367,6 @@ class PublicNumber:
                         cable_w_num)
         y = np.linspace((8 - 4) * self.cellSize + self.topPos, self.topPos - (self.height - 4) * self.cellSize,
                         cable_h_num)
-        # for d in my_ana_dict.values():
-        #     z.append(float(d))
         z = [float(d) for d in my_ana_dict.values()]
         # 网格的坐标
         xGrid = np.linspace(self.leftPos, self.width * self.cellSize + self.leftPos, cable_w_num + 1)
