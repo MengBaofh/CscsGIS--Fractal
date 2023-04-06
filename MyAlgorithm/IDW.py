@@ -53,11 +53,7 @@ class IDW:
         :param yi: 该点的y坐标
         :return:
         """
-        dSqrt_list = []  # 距离平方list
-        dSqrt_list_append = dSqrt_list.append
-        for sample_point_y in self.sample_point_Y:
-            for sample_point_x in self.sample_point_X:
-                dSqrt_list_append(self.calDistance(xi, yi, sample_point_x, sample_point_y))
+        dSqrt_list = [self.calDistance(xi, yi, spx, spy) for spy in self.sample_point_Y for spx in self.sample_point_X]
         dRec_list = 1 / np.array(dSqrt_list)  # 距离平方的倒数list
         dSum = np.sum(dRec_list)  # 倒数平方的和
         weight_list = np.array(dRec_list) / dSum  # 权重list
@@ -69,8 +65,4 @@ class IDW:
         启动算法
         :return:
         """
-        vFractalDimension_append = self.__vFractalDimension.append
-        for yi in self.yGrid:
-            for xi in self.xGrid:
-                IDW_D = self.calculate_D(xi, yi)
-                vFractalDimension_append(IDW_D)
+        self.__vFractalDimension = [self.calculate_D(xi, yi) for yi in self.yGrid for xi in self.xGrid]

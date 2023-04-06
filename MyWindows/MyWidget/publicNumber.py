@@ -289,12 +289,11 @@ class PublicNumber:
         :param each_width: 格子宽度（长度）
         :return: list
         """
-        each_list = []  # 每个格子的内容列表
-        col = int(cables % cable_w_num)  # 该格子在第col列# （从0开始）
-        a = int(cables / cable_w_num)  # 该格子在第a行（从0开始）
-        for line in range(each_width * a, each_width * (a + 1)):
-            for i in range(each_width * col, each_width * (col + 1)):  # 第cables个格子起始位置和终止位置
-                each_list.append(data_list[line][i])
+        line = int(cables / cable_w_num)  # 该格子在第line行（从0开始的格子坐标）
+        col = int(cables % cable_w_num)  # 该格子在第col列# （从0开始的格子坐标）
+        startLine, endLine = each_width * line, each_width * (line + 1)  # 该格子起始行数和终止行数（栅格坐标）
+        startCol, endCol = each_width * col, each_width * (col + 1)  # 起始列数和终止列数
+        each_list = [data_list[i][j] for i in range(startLine, endLine) for j in range(startCol, endCol)]
         return each_list
 
     @staticmethod
@@ -343,7 +342,7 @@ class PublicNumber:
                 frame0.pBar['maximum'] = final_dict_len * L_anas
                 frame0.pBar['value'] = i
                 frame0.update()
-            if count == 4:  # 当边长全对应0个1时，说明该格子中无断裂，直接将其分形维数赋值为0，且跳过下面的最小二乘法分析
+            if count == 4:  # 当边长全对应0个1时，说明该格子中无断裂构造，直接将其分形维数赋值为0，且跳过下面的最小二乘法分析
                 my_ana_dict[cables] = 0
                 continue
             # 最小二乘法求解a和b
@@ -351,9 +350,7 @@ class PublicNumber:
             pda = sympy_diff(Lab_sum, a)  # 对a求偏导
             pdb = sympy_diff(Lab_sum, b)
             sols = sympy_solve([pda, pdb], a, b)
-            for xa in sols:
-                my_ana_dict[cables] = round(-sols[xa], 5)  # 分维值保留5位小数
-                break  # 循环一次就结束，因为我要的是a不是b
+            my_ana_dict[cables] = round(-sols.get(a), 5)  # 分维值保留5位小数
         self.ana_dict = my_ana_dict
         IDW_D_Len = self.image_init(my_ana_dict)
         showinfo('CscsGIS', f'分析完毕！\n计算得到{final_dict_len}个分维值\n通过IDW插值拟合了{IDW_D_Len}个分维值')
@@ -363,18 +360,17 @@ class PublicNumber:
         计算画图所需的X0,Y0,Z0
         :return: int
         """
-        # plt.close()  # 清除原图
         cable_w_num = int(self.width / 8)  # 一行的基础格子数
         cable_h_num = int(self.height / 8)
         z = []
         # 数据点的x,y轴坐标尺,-4将分维值放到格子中间
-        # x, y = np.linspace(8 - 4, self.width - 4, cable_w_num), np.linspace(8 - 4, self.height - 4, cable_h_num)
         x = np.linspace((8 - 4) * self.cellSize + self.leftPos, (self.width - 4) * self.cellSize + self.leftPos,
                         cable_w_num)
         y = np.linspace((8 - 4) * self.cellSize + self.topPos, self.topPos - (self.height - 4) * self.cellSize,
                         cable_h_num)
-        for d in my_ana_dict.values():
-            z.append(float(d))
+        # for d in my_ana_dict.values():
+        #     z.append(float(d))
+        z = [float(d) for d in my_ana_dict.values()]
         # 网格的坐标
         xGrid = np.linspace(self.leftPos, self.width * self.cellSize + self.leftPos, cable_w_num + 1)
         yGrid = np.linspace(self.topPos, self.topPos - self.height * self.cellSize, cable_w_num + 1)
@@ -407,8 +403,6 @@ class PublicNumber:
         # 添加等值线
         C1 = self.plt.contour(self.X0, self.Y0, self.Z0, 10)
         self.plt.clabel(C1, inline=True, fontsize=7)  # 标注等值线
-        # self.plt.gca().invert_yaxis()  # 反转y轴
-        # self.plt.gca().set_aspect('equal', adjustable='box')  # xy轴坐标比例自适应调整
         self.plt.colorbar(C0, fraction=0.046, pad=0.04, shrink=1.0)  # 添加色带
         self.plt.xlabel('注意: 1e4 (m)= 1.0 x 10000 (m), 默认单位为米', fontsize=10)
         self.plt.xticks(rotation=30, fontsize=10)
@@ -416,7 +410,6 @@ class PublicNumber:
         self.plt.title('分形维数等值图')
         # 显示图表
         self.plt.show()
-        # self.plt.savefig(self.IOutPutDir + '/Fractal_Contour.png', format='png', dpi=300, transparent=True)
 
     @staticmethod
     def show_about():
@@ -424,7 +417,10 @@ class PublicNumber:
         软件信息
         """
         showinfo('CscsGIS',
-                 'Author：Hao Fang\nInstructor：Yue Liu\nVersion：1.1.1\nName：ConstructSystemComplexitySimulation')
+                 'Author：Hao Fang\n'
+                 'Instructor：Yue Liu\n'
+                 'Version：1.1.1\n'
+                 'Name：ConstructSystemComplexitySimulation')
 
 
 pn = PublicNumber()

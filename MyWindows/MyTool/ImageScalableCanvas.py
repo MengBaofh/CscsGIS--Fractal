@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 
 class ISCanvas(Canvas):
     """
+    # 暂时弃用
     可以缩放图片的画布
     """
     imscale = 1.0
