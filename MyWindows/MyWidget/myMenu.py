@@ -1,5 +1,6 @@
 from tkinter import *
 from MyWindows.MyWidget.publicNumber import pn
+from MyWindows.MyTool.ToolBox import *
 
 
 class MenuBar(Menu):
@@ -18,10 +19,12 @@ class MenuBar(Menu):
         file_menu = FileMenu(self, self.frame10, tearoff=False)
         analyse_menu = AnalyseMenu(self, self.frame0, tearoff=False)
         set_menu = SetMenu(self, tearoff=False)
+        toolBox_menu = ToolBoxMenu(self)
         about_menu = AboutMenu(self, tearoff=False)
         self.add_cascade(label='文件', menu=file_menu)  # 添加到菜单条中
         self.add_cascade(label='分析', menu=analyse_menu)
         self.add_cascade(label='设置', menu=set_menu)
+        self.add_cascade(label='工具箱', menu=toolBox_menu)
         self.add_cascade(label='关于', menu=about_menu)
 
 
@@ -49,6 +52,18 @@ class AnalyseMenu(Menu):
         self.frame0: Frame = frame0
         self.add_command(label='开始分析', command=lambda: pn.startAnaThread(frame0))  # 绑定事件
         self.add_command(label='绘制分形维数等值图', command=pn.show_image)  # 绑定事件
+
+
+class ToolBoxMenu(Menu):
+    """
+    '工具箱'菜单
+    """
+
+    def __init__(self, master, cnf={}, **kw):
+        super().__init__(master, cnf={}, **kw)
+        self.master: MenuBar = master
+        self.add_command(label='矢量转栅格', command=vectorToRaster)  # 绑定事件
+        self.add_command(label='栅格转ASCII', command=rasterToAscii)
 
 
 class SetMenu(Menu):

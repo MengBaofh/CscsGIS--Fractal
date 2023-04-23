@@ -1,5 +1,4 @@
 from tkinter import *
-# from tkinter.ttk import *
 
 from MyWindows.MyWidget.myFrame import Frame0, Frame10, Frame11, Frame2
 from MyWindows.MyWidget.myMenu import MenuBar

@@ -1,4 +1,3 @@
-import os
 import matplotlib
 import MyWindows.mainWindow as mWin
 from tkinter import *

@@ -1,6 +1,5 @@
 import pandas as pd
 from tkinter import *
-# from tkinter import ttk
 from tkinter.ttk import *
 from Pmw import Balloon
 from MyWindows.MyTool.AutoScrollBar import AutoScrollBar
