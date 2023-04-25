@@ -1,6 +1,7 @@
 from tkinter import *
 from MyWindows.MyWidget.publicNumber import pn
 from MyWindows.MyTool.ToolBox import *
+from MyWindows.MyWidget.myTopLevel import ParaInputTop
 
 
 class MenuBar(Menu):
@@ -9,7 +10,7 @@ class MenuBar(Menu):
     """
 
     def __init__(self, root, frames, cnf={}, **kw):
-        super().__init__(root, cnf={}, **kw)
+        super().__init__(root, cnf, **kw)
         self.root: Tk = root
         self.frame0: Frame = frames[0]
         self.frame10: Frame = frames[1]
@@ -34,7 +35,7 @@ class FileMenu(Menu):
     """
 
     def __init__(self, master, frame10, cnf={}, **kw):
-        super().__init__(master, cnf={}, **kw)
+        super().__init__(master, cnf, **kw)
         self.master: MenuBar = master
         self.add_command(label='打开文件', command=lambda: pn.openFile(frame10))  # 绑定事件
         self.add_command(label='添加矢量数据', command=lambda: pn.addVectorFile(frame10))  # 绑定事件
@@ -47,7 +48,7 @@ class AnalyseMenu(Menu):
     """
 
     def __init__(self, master, frame0, cnf={}, **kw):
-        super().__init__(master, cnf={}, **kw)
+        super().__init__(master, cnf, **kw)
         self.master: MenuBar = master
         self.frame0: Frame = frame0
         self.add_command(label='开始分析', command=lambda: pn.startAnaThread(frame0))  # 绑定事件
@@ -60,10 +61,13 @@ class ToolBoxMenu(Menu):
     """
 
     def __init__(self, master, cnf={}, **kw):
-        super().__init__(master, cnf={}, **kw)
+        super().__init__(master, cnf, **kw)
         self.master: MenuBar = master
-        self.add_command(label='矢量转栅格', command=vectorToRaster)  # 绑定事件
-        self.add_command(label='栅格转ASCII', command=rasterToAscii)
+        self.add_command(label='矢量转栅格',
+                         command=lambda: ParaInputTop({'栅格边长(m)': 800}, master, '矢量:shp', '栅格:tif',
+                                                      vectorToRaster))
+        self.add_command(label='栅格转ASCII',
+                         command=lambda: ParaInputTop({}, master, '栅格:tif', 'ASCII:txt', rasterToAscii))
 
 
 class SetMenu(Menu):
@@ -72,7 +76,7 @@ class SetMenu(Menu):
     """
 
     def __init__(self, master, cnf={}, **kw):
-        super().__init__(master, cnf={}, **kw)
+        super().__init__(master, cnf, **kw)
         self.master: MenuBar = master
         color_menu = ColorMenu(self, tearoff=False)
         vector_color_menu = VectorColorMenu(self, tearoff=False)
@@ -86,7 +90,7 @@ class ColorMenu(Menu):
     """
 
     def __init__(self, master, cnf={}, **kw):
-        super().__init__(master, cnf={}, **kw)
+        super().__init__(master, cnf, **kw)
         self.master: SetMenu = master
         pn.createStringVar()
         pn.var.set(pn.myContColor)
@@ -100,7 +104,7 @@ class VectorColorMenu(Menu):
     """
 
     def __init__(self, master, cnf={}, **kw):
-        super().__init__(master, cnf={}, **kw)
+        super().__init__(master, cnf, **kw)
         self.master: SetMenu = master
         pn.createVectorStringVar()
         pn.vectorVar.set(pn.vectorColor)
@@ -114,6 +118,6 @@ class AboutMenu(Menu):
     """
 
     def __init__(self, master, cnf={}, **kw):
-        super().__init__(master, cnf={}, **kw)
+        super().__init__(master, cnf, **kw)
         self.master: MenuBar = master
         self.add_command(label='软件信息', command=pn.show_about)  # 绑定事件
