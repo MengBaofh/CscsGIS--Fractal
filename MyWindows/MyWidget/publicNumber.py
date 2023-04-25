@@ -418,7 +418,7 @@ class PublicNumber:
         showinfo('CscsGIS',
                  'Author：Hao Fang\n'
                  'Instructor：Yue Liu\n'
-                 'Version：1.2.1\n'
+                 'Version：1.2.2\n'
                  'Name：ConstructSystemComplexitySimulation')
 
 
