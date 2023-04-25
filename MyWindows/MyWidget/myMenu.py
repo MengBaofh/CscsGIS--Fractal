@@ -1,7 +1,8 @@
 from tkinter import *
 from MyWindows.MyWidget.publicNumber import pn
 from MyWindows.MyTool.ToolBox import *
-from MyWindows.MyWidget.myTopLevel import ParaInputTop
+from MyWindows.MyWidget.toolBoxTopLevel import ParaInputTop
+from MyWindows.MyWidget.algorithmTopLevel import AlgorithmParaTop
 
 
 class MenuBar(Menu):
@@ -51,7 +52,9 @@ class AnalyseMenu(Menu):
         super().__init__(master, cnf, **kw)
         self.master: MenuBar = master
         self.frame0: Frame = frame0
-        self.add_command(label='开始分析', command=lambda: pn.startAnaThread(frame0))  # 绑定事件
+        self.add_command(label='开始分析',
+                         command=lambda: AlgorithmParaTop({'搜索半径(点数)': 15, '幂': 2}, 'IDW', self.frame0,
+                                                          pn.startAnaThread))  # 绑定事件
         self.add_command(label='绘制分形维数等值图', command=pn.show_image)  # 绑定事件
 
 

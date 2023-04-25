@@ -60,8 +60,8 @@ class PublicNumber:
             '白': 'white'
         }
 
-    def startAnaThread(self, frame0: Frame):
-        self.ana_thread = AnalyseThread(target=self.ini, args=(frame0,))
+    def startAnaThread(self, master, frame0: Frame, vars):
+        self.ana_thread = AnalyseThread(target=self.ini, args=(master, frame0, vars))
         self.ana_thread.start()
 
     def createStringVar(self):
@@ -109,8 +109,8 @@ class PublicNumber:
         self.ana_dict.clear()
 
     def addVectorFile(self, frame10):
-        with askopenfile(title='添加矢量数据', filetypes=[('Shapefile', '*.shp')]) as f:
-            if f.name:
+        try:
+            with askopenfile(title='添加矢量数据', filetypes=[('Shapefile', '*.shp')]) as f:
                 try:
                     frame10.getTreeView().insert('', '0', f.name, text=f.name.split('/')[-1])
                 except TclError:
@@ -120,15 +120,15 @@ class PublicNumber:
                     self.tvSelectData[f.name] = self.gdf
                     frame10.getTreeView().updateText()
                     showinfo('CscsGIS', '成功导入矢量数据！')
-            else:
-                return
+        except TypeError:
+            pass
 
     def openFile(self, frame10):
         if self.state != 0 and self.state < 1:
             showwarning('CscsGIS', '请等待分析完成！')
             return
-        with askopenfile(title='打开文件', filetypes=[('文本文件', '*.txt')]) as f:
-            if f.name:
+        try:
+            with askopenfile(title='打开文件', filetypes=[('文本文件', '*.txt')]) as f:
                 try:
                     frame10.getTreeView().insert('', '0', f.name, text=f.name.split('/')[-1])
                 except TclError:
@@ -137,8 +137,8 @@ class PublicNumber:
                     result = self.read(f.name)
                     (showinfo('CscsGIS', '成功导入数据！'), frame10.getTreeView().updateText()) if result else (
                         frame10.getTreeView().delete(f.name), showwarning('CscsGIS', '数据导入格式错误！'))
-            else:
-                return
+        except TypeError:
+            pass
 
     def read(self, file_name):
         if self.state != 0 and self.state < 1:
@@ -175,12 +175,12 @@ class PublicNumber:
         if self.state != 0 and self.state < 1:
             showwarning('CscsGIS', '请等待分析完毕！')
             return
-        with asksaveasfile(title='另存为', initialfile='新建文件', defaultextension='',
-                           filetypes=[('Excel文件', '*.xlsx')]) as f:
-            if f.name:
+        try:
+            with asksaveasfile(title='另存为', initialfile='新建文件', defaultextension='',
+                               filetypes=[('Excel文件', '*.xlsx')]) as f:
                 self.print_in_excel(f.name)
-            else:
-                return
+        except TypeError:
+            pass
 
     def print_in_excel(self, file_name):
         """
@@ -207,13 +207,14 @@ class PublicNumber:
         workbook.close()
         print('数据写入完毕!')
 
-    def ini(self, frame0: Frame):
+    def ini(self, master, frame0: Frame, vars):
         """
         初始化数据栅格
         转换成 长宽均为8的倍数的栅格
         # 最多舍弃7行/列数据
         :return:
         """
+        master.destroy()
         target_file_name = ''
         for file_name in self.treeViewSelections:
             suffix = file_name.split('.')[-1]
@@ -239,9 +240,9 @@ class PublicNumber:
             for j in range(-el_width, 0):
                 self.s_list[i].pop(j)
         self.width -= el_width
-        self.base_spl(frame0, self.s_list)
+        self.base_spl(frame0, vars, self.s_list)
 
-    def base_spl(self, frame0: Frame, raster_list: list):
+    def base_spl(self, frame0: Frame, vars, raster_list: list):
         """
         分割成基础单元并对每一个进行操作spl
         :return:
@@ -255,7 +256,7 @@ class PublicNumber:
             each_list = self.cable_content(raster_list, cables, cable_w_num, 8)
             each_list_two_dimension = np_array(each_list).reshape(8, 8)
             final_dict[cables] = self.spl(each_list_two_dimension)
-        self.analyze(frame0, final_dict)
+        self.analyze(frame0, final_dict, vars)
 
     def spl(self, each_cable_data_list: list):
         """
@@ -307,13 +308,15 @@ class PublicNumber:
                 return True
         return False
 
-    def analyze(self, frame0: Frame, final_relation_dict: dict):
+    def analyze(self, frame0: Frame, final_relation_dict: dict, vars):
         """
         对final_dict进行最小二乘法拟合
         :param frame0:
         :param final_relation_dict: 每个基础格子的关系数据字典（格子序号：关系数据）
         :return:
         """
+        radius = vars['搜索半径(点数)'].get()
+        n = vars['幂'].get()
         self.ana_dict.clear()
         my_ana_dict = {}
         i = 0
@@ -351,10 +354,10 @@ class PublicNumber:
             sols = sympy_solve([pda, pdb], a, b)
             my_ana_dict[cables] = round(-sols.get(a), 5)  # 分维值保留5位小数
         self.ana_dict = my_ana_dict
-        IDW_D_Len = self.image_init(my_ana_dict)
+        IDW_D_Len = self.image_init(my_ana_dict, radius, n)
         showinfo('CscsGIS', f'分析完毕！\n计算得到{final_dict_len}个分维值\n通过IDW插值拟合了{IDW_D_Len}个分维值')
 
-    def image_init(self, my_ana_dict: dict):
+    def image_init(self, my_ana_dict: dict, radius, n):
         """
         计算画图所需的X0,Y0,Z0
         :return: int
@@ -362,9 +365,7 @@ class PublicNumber:
         # plt.close()  # 清除原图
         cable_w_num = int(self.width / 8)  # 一行的基础格子数
         cable_h_num = int(self.height / 8)
-        z = []
         # 数据点的x,y轴坐标尺,-4将分维值放到格子中间
-        # x, y = np.linspace(8 - 4, self.width - 4, cable_w_num), np.linspace(8 - 4, self.height - 4, cable_h_num)
         x = np.linspace((8 - 4) * self.cellSize + self.leftPos, (self.width - 4) * self.cellSize + self.leftPos,
                         cable_w_num)
         y = np.linspace((8 - 4) * self.cellSize + self.topPos, self.topPos - (self.height - 4) * self.cellSize,
@@ -374,7 +375,7 @@ class PublicNumber:
         xGrid = np.linspace(self.leftPos, self.width * self.cellSize + self.leftPos, cable_w_num + 1)
         yGrid = np.linspace(self.topPos, self.topPos - self.height * self.cellSize, cable_w_num + 1)
         # idw算法分析
-        idw = IDW(xGrid, yGrid, x, y, z)  # 实例化算法对象
+        idw = IDW(xGrid, yGrid, x, y, z, radius, n)  # 实例化算法对象
         z0 = idw.getVFractalDimension()  # 网格的拟合分维值
         # 数据对齐
         self.X0, self.Y0 = np.meshgrid(xGrid, yGrid)
@@ -418,7 +419,7 @@ class PublicNumber:
         showinfo('CscsGIS',
                  'Author：Hao Fang\n'
                  'Instructor：Yue Liu\n'
-                 'Version：1.2.2\n'
+                 'Version：1.2.3\n'
                  'Name：ConstructSystemComplexitySimulation')
 
 

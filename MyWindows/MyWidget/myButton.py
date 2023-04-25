@@ -2,6 +2,7 @@ from tkinter import *
 from tkinter.filedialog import *
 
 from MyWindows.MyWidget.publicNumber import pn
+from MyWindows.MyWidget.algorithmTopLevel import AlgorithmParaTop
 
 
 class CustomButton(Button):
@@ -50,7 +51,8 @@ class StartButton(CustomButton):
     """
 
     def __init__(self, master):
-        super().__init__(master, 'MyImage/start.png', lambda: pn.startAnaThread(master))
+        super().__init__(master, 'MyImage/start.png',
+                         lambda: AlgorithmParaTop({'搜索半径(点数)': 15, '幂': 2}, 'IDW', master, pn.startAnaThread))
 
 
 class ShowButton(CustomButton):

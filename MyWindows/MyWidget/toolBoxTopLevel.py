@@ -6,7 +6,7 @@ from MyWindows.MyWidget.myButton import OpenFilesButton, SaveFilesButton
 
 class ParaInputTop(Toplevel):
     """
-    弹窗类
+    工具箱弹窗类
     """
     width = 350
     height = 350
@@ -46,14 +46,14 @@ class ParaInputTop(Toplevel):
         n = len(self.vars)
         x, y = 0.2, 0.15
         for parameter, var in self.vars.items():
-            Label(self, text=parameter, relief='groove', anchor='center')\
+            Label(self, text=parameter, relief='groove', anchor='center') \
                 .place(relx=x, rely=y, relheight=0.07, relwidth=0.25)
-            Entry(self, textvariable=self.vars[parameter], justify='center')\
+            Entry(self, textvariable=self.vars[parameter], justify='center') \
                 .place(relx=x + 0.35, rely=y, relheight=0.07, relwidth=0.25)
             y += 0.6 / n
         Button(self, text='确定',
                command=lambda: self.method(self, self.openFileButton.getOpenFileName(),
-                                           self.saveFileButton.getSaveFileName(), self.vars))\
+                                           self.saveFileButton.getSaveFileName(), self.vars)) \
             .place(relx=0.3, rely=0.9, relheight=0.07, relwidth=0.4)
 
     def setInOu(self):
