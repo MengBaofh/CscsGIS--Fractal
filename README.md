@@ -11,8 +11,8 @@ This is a software uesed to simulate the complexity (`Fractal Dimension`) of a c
 # Presentation
 ![image](https://github.com/MengBaofh/CscsGIS--Fractal/blob/main/ImgShow/Figure_1.png)
 # Mail
-    QQ-Mail: 825585398@qq.com  
-    CUG-Mail(rarely used): mengbaofh@cug.edu.cn  
+QQ-Mail: 825585398@qq.com  
+CUG-Mail(rarely used): mengbaofh@cug.edu.cn  
 Please contact me if you have any questions!  
 # Notice
 We have obtained `Computer Software Copyright`. Without permission, you're prohibited to reprint!  
