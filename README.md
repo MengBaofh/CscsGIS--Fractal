@@ -9,7 +9,7 @@ This is a software uesed to simulate the complexity (fractal dimension) of a con
 3. It takes an average of 5 minutes to calculate almost 2000 fractal dimensions.  
 *平均每5分钟可计算约2000个分形维数  
 # Presentation
-![image]ImgShow/Figure_1.png
+![image][ImgShow/Figure_1.png](https://github.com/MengBaofh/CscsGIS--Fractal/blob/main/ImgShow/Figure_1.png)
 # Mail
 QQ-Mail: 825585398@qq.com  
 CUG-Mail(rarely used): mengbaofh@cug.edu.cn  
