@@ -362,7 +362,6 @@ class PublicNumber:
         计算画图所需的X0,Y0,Z0
         :return: int
         """
-        # plt.close()  # 清除原图
         cable_w_num = int(self.width / 8)  # 一行的基础格子数
         cable_h_num = int(self.height / 8)
         # 数据点的x,y轴坐标尺,-4将分维值放到格子中间
@@ -399,10 +398,11 @@ class PublicNumber:
             if isinstance(data, pd.DataFrame):
                 data.plot(color=self.vectorColor, ax=ax, zorder=index + 2, alpha=1)  # 234..(上)图层
         # 填充等值线
-        C0 = self.plt.contourf(self.X0, self.Y0, self.Z0, 10, cmap=self.myContColor, zorder=1, alpha=1)  # 1(底)图层
+        C0 = self.plt.contourf(self.X0, self.Y0, self.Z0, 10, cmap=self.myContColor, zorder=1, alpha=1,
+                               antialiased=True)  # 1(底)图层
         # 添加等值线
-        C1 = self.plt.contour(self.X0, self.Y0, self.Z0, 10)
-        self.plt.clabel(C1, inline=True, fontsize=7)  # 标注等值线
+        C1 = self.plt.contour(self.X0, self.Y0, self.Z0, 10, antialiased=True, linewidths=0.1)
+        self.plt.clabel(C1, inline=True, fontsize=5)  # 标注等值线
         self.plt.colorbar(C0, fraction=0.046, pad=0.04, shrink=1.0)  # 添加色带
         self.plt.xlabel('注意: 1e4 (m)= 1.0 x 10000 (m), 默认单位为米', fontsize=10)
         self.plt.xticks(rotation=30, fontsize=10)
