@@ -1,7 +1,7 @@
 # CscsGIS
 This is a software uesed to simulate the complexity (fractal dimension) of a construct system.  
 *一款构造系统复杂度模拟软件，可以计算构造分形维数  
-# More
+# Learn More
 1. This software uses box dimension method to calculate fractal dimension, uses IDW algorithm to interpolate and draw fractal dimension distribution map.   
 *该软件使用盒维数法计算分形维数，使用IDW算法进行插值并绘制分形维数分布图  
 2. It can read the vector data and superimpose it on the fractal dimension distribution diagram, and can also read and display the property sheet.  
