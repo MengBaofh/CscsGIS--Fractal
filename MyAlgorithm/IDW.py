@@ -32,7 +32,7 @@ class IDW:
 
     def calDistance(self, xi: int, yi: int, x: int, y: int):
         """
-        计算距离的平方
+        计算距离的n次幂
         :param xi: 网格点x
         :param yi: 网格点y
         :param x: 样本点x

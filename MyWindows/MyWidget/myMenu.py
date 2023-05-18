@@ -1,5 +1,5 @@
 from tkinter import *
-from MyWindows.MyWidget.publicNumber import pn
+from MyWindows.MyWidget.publicMember import pm
 from MyWindows.MyTool.ToolBox import *
 from MyWindows.MyWidget.toolBoxTopLevel import ParaInputTop
 from MyWindows.MyWidget.algorithmTopLevel import AlgorithmParaTop
@@ -38,9 +38,9 @@ class FileMenu(Menu):
     def __init__(self, master, frame10, cnf={}, **kw):
         super().__init__(master, cnf, **kw)
         self.master: MenuBar = master
-        self.add_command(label='打开文件', command=lambda: pn.openFile(frame10))  # 绑定事件
-        self.add_command(label='添加矢量数据', command=lambda: pn.addVectorFile(frame10))  # 绑定事件
-        self.add_command(label='保存数据', command=pn.saveFile)  # 绑定事件
+        self.add_command(label='打开文件', command=lambda: pm.openFile(frame10))  # 绑定事件
+        self.add_command(label='添加矢量数据', command=lambda: pm.addVectorFile(frame10))  # 绑定事件
+        self.add_command(label='保存数据', command=pm.saveFile)  # 绑定事件
 
 
 class AnalyseMenu(Menu):
@@ -54,8 +54,8 @@ class AnalyseMenu(Menu):
         self.frame0: Frame = frame0
         self.add_command(label='开始分析',
                          command=lambda: AlgorithmParaTop({'搜索半径(点数)': 15, '幂': 2}, 'IDW', self.frame0,
-                                                          pn.startAnaThread))  # 绑定事件
-        self.add_command(label='绘制分形维数等值图', command=pn.show_image)  # 绑定事件
+                                                          pm.startAnaThread))  # 绑定事件
+        self.add_command(label='绘制分形维数等值图', command=pm.show_image)  # 绑定事件
 
 
 class ToolBoxMenu(Menu):
@@ -95,10 +95,10 @@ class ColorMenu(Menu):
     def __init__(self, master, cnf={}, **kw):
         super().__init__(master, cnf, **kw)
         self.master: SetMenu = master
-        pn.createStringVar()
-        pn.var.set(pn.myContColor)
-        for labels, colors in pn.colors.items():
-            self.add_radiobutton(label=labels, variable=pn.var, value=colors, command=pn.setMyContColor)  # 绑定字符串的值
+        pm.createStringVar()
+        pm.var.set(pm.myContColor)
+        for labels, colors in pm.colors.items():
+            self.add_radiobutton(label=labels, variable=pm.var, value=colors, command=pm.setMyContColor)  # 绑定字符串的值
 
 
 class VectorColorMenu(Menu):
@@ -109,10 +109,10 @@ class VectorColorMenu(Menu):
     def __init__(self, master, cnf={}, **kw):
         super().__init__(master, cnf, **kw)
         self.master: SetMenu = master
-        pn.createVectorStringVar()
-        pn.vectorVar.set(pn.vectorColor)
-        for labels, colors in pn.vColors.items():
-            self.add_radiobutton(label=labels, variable=pn.vectorVar, value=colors, command=pn.setVectorColor)
+        pm.createVectorStringVar()
+        pm.vectorVar.set(pm.vectorColor)
+        for labels, colors in pm.vColors.items():
+            self.add_radiobutton(label=labels, variable=pm.vectorVar, value=colors, command=pm.setVectorColor)
 
 
 class AboutMenu(Menu):
@@ -123,4 +123,4 @@ class AboutMenu(Menu):
     def __init__(self, master, cnf={}, **kw):
         super().__init__(master, cnf, **kw)
         self.master: MenuBar = master
-        self.add_command(label='软件信息', command=pn.show_about)  # 绑定事件
+        self.add_command(label='软件信息', command=pm.show_about)  # 绑定事件

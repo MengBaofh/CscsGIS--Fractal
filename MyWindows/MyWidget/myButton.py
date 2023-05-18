@@ -1,7 +1,7 @@
 from tkinter import *
 from tkinter.filedialog import *
 
-from MyWindows.MyWidget.publicNumber import pn
+from MyWindows.MyWidget.publicMember import pm
 from MyWindows.MyWidget.algorithmTopLevel import AlgorithmParaTop
 
 
@@ -13,7 +13,7 @@ class CustomButton(Button):
     def __init__(self, master, image_path, command):
         super().__init__(master)
         self.master = master
-        self.image = pn.imageLoader(image_path, (20, 20))[2]
+        self.image = pm.imageLoader(image_path, (20, 20))[2]
         self['image'] = self.image
         self['command'] = command
 
@@ -24,7 +24,7 @@ class OpenFileButton(CustomButton):
     """
 
     def __init__(self, master, frame10):
-        super().__init__(master, 'MyImage/open.png', lambda: pn.openFile(frame10))
+        super().__init__(master, 'MyImage/open.png', lambda: pm.openFile(frame10))
 
 
 class AddVectorFileButton(CustomButton):
@@ -33,7 +33,7 @@ class AddVectorFileButton(CustomButton):
     """
 
     def __init__(self, master, frame10):
-        super().__init__(master, 'MyImage/addV.png', lambda: pn.addVectorFile(frame10))
+        super().__init__(master, 'MyImage/addV.png', lambda: pm.addVectorFile(frame10))
 
 
 class SaveFileButton(CustomButton):
@@ -42,7 +42,7 @@ class SaveFileButton(CustomButton):
     """
 
     def __init__(self, master):
-        super().__init__(master, 'MyImage/save.png', pn.saveFile)
+        super().__init__(master, 'MyImage/save.png', pm.saveFile)
 
 
 class StartButton(CustomButton):
@@ -52,7 +52,7 @@ class StartButton(CustomButton):
 
     def __init__(self, master):
         super().__init__(master, 'MyImage/start.png',
-                         lambda: AlgorithmParaTop({'搜索半径(点数)': 15, '幂': 2}, 'IDW', master, pn.startAnaThread))
+                         lambda: AlgorithmParaTop({'搜索半径(点数)': 15, '幂': 2}, 'IDW', master, pm.startAnaThread))
 
 
 class ShowButton(CustomButton):
@@ -61,7 +61,7 @@ class ShowButton(CustomButton):
     """
 
     def __init__(self, master):
-        super().__init__(master, 'MyImage/show.png', pn.show_image)
+        super().__init__(master, 'MyImage/show.png', pm.show_image)
 
 
 class OpenFilesButton(CustomButton):

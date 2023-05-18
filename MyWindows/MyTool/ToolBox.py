@@ -52,11 +52,11 @@ def rasterToAscii(master, openFileName, saveFileName, vars):
     geotransform = raster_ds.GetGeoTransform()
     # 创建输出文件
     output_file = open(save_file, 'w')
-    output_file.write(f'ncols\t{xSize}\n')
-    output_file.write(f'nrows\t{ySize}\n')
-    output_file.write(f'xllcorner\t{geotransform[0]:.4f}\n')
-    output_file.write(f'yllcorner\t{geotransform[3] + ySize * geotransform[5]:.4f}\n')
-    output_file.write(f'cellsize\t{geotransform[1]}\n')
+    output_file.write(f'ncols\t\t{xSize}\n')
+    output_file.write(f'nrows\t\t{ySize}\n')
+    output_file.write(f'xllcorner\t\t{geotransform[0]:.4f}\n')
+    output_file.write(f'yllcorner\t\t{geotransform[3] + ySize * geotransform[5]:.4f}\n')
+    output_file.write(f'cellsize\t\t{geotransform[1]}\n')
     output_file.write(f'NODATA_value\t{-9999}\n')
     # 将栅格数据转换为ASCII格式写入输出文件
     data = band.ReadAsArray()

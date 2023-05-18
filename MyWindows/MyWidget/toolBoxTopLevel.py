@@ -1,5 +1,5 @@
 from tkinter import *
-from tkinter.ttk import *
+from tkinter import ttk
 from Pmw import Balloon
 from MyWindows.MyWidget.myButton import OpenFilesButton, SaveFilesButton
 
@@ -57,9 +57,9 @@ class ParaInputTop(Toplevel):
             .place(relx=0.3, rely=0.9, relheight=0.07, relwidth=0.4)
 
     def setInOu(self):
-        Button(self, textvariable=self.InputVar).place(relx=0.2, rely=0.053, relheight=0.07,
+        ttk.Button(self, textvariable=self.InputVar).place(relx=0.2, rely=0.053, relheight=0.07,
                                                        relwidth=0.53)
-        Button(self, textvariable=self.OutputVar).place(relx=0.2, rely=0.703, relheight=0.07,
+        ttk.Button(self, textvariable=self.OutputVar).place(relx=0.2, rely=0.703, relheight=0.07,
                                                         relwidth=0.53)
         self.openFileButton = OpenFilesButton(self, self.type1[0], self.type1[1])
         self.saveFileButton = SaveFilesButton(self, self.type2[0], self.type2[1])
