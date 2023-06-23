@@ -40,7 +40,8 @@ class ParaInputTop(Toplevel):
     def setParaInputTop(self):
         self.title(f'{self.type1[0]}转{self.type2[0]}')
         self.iconbitmap('MyImage/earth.ico')
-        self.geometry(f'{self.width}x{self.height}+500+200')
+        self.geometry(f'{self.width}x{self.height}')
+        self.attributes('-topmost', 'true')  # 保持窗口最上
 
     def setLabelEntry(self):
         n = len(self.vars)

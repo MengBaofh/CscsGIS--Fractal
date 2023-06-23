@@ -21,7 +21,7 @@ class MainLeftTreeView(Treeview):
         treeview选中回调函数
         :return:
         """
-        for select in event.widget.selection():
+        for select in self.selection():
             if select in pm.treeViewSelections:
                 pm.treeViewSelections.remove(select)
                 self.updateText()
@@ -47,7 +47,7 @@ class MainLeftTreeView(Treeview):
         """
         for label in self.master.getButtonFrame().winfo_children():
             label.destroy()
-        for node in self.master.getTreeView().get_children():
+        for node in self.get_children():
             Label(self.master.getButtonFrame(), text='√' if node in pm.treeViewSelections else '□').pack(fill=X)
 
 

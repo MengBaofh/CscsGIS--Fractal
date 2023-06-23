@@ -319,7 +319,7 @@ class PublicMember:
                 L_append((y - a * x - b))
                 frame0.pBar['maximum'] = final_dict_len * L_anas
                 frame0.pBar['value'] = i
-                frame0.update()
+                frame0.pBar.update()
             if count == 4:  # 当边长全对应0个1时，说明该格子中无断裂构造，直接将其分形维数赋值为0，且跳过下面的最小二乘法分析
                 my_ana_dict[cables] = 0
                 continue
@@ -330,10 +330,10 @@ class PublicMember:
             sols = sympy_solve([pda, pdb], a, b)
             my_ana_dict[cables] = round(-sols.get(a), 5)  # 分维值保留5位小数
         self.ana_dict = my_ana_dict
-        IDW_D_Len = self.image_init(my_ana_dict, radius, n)
+        IDW_D_Len = self.image_init(my_ana_dict, radius, n, frame0)
         showinfo('CscsGIS', f'分析完毕！\n计算得到{final_dict_len}个分维值\n通过IDW插值拟合了{IDW_D_Len}个分维值')
 
-    def image_init(self, my_ana_dict: dict, radius, n):
+    def image_init(self, my_ana_dict: dict, radius, n, frame0):
         """
         计算画图所需的X0,Y0,Z0
         :return: int
@@ -347,12 +347,10 @@ class PublicMember:
                         cable_h_num)
         z = [float(d) for d in my_ana_dict.values()]
         # 格子中心的坐标
-        xGrid = np.linspace(self.leftPos + self.cellSize / 2 * 8,
-                            self.leftPos + self.width * self.cellSize + self.cellSize / 2 * 8, cable_w_num + 1)
-        yGrid = np.linspace(self.topPos - self.cellSize / 2 * 8,
-                            self.topPos - self.height * self.cellSize - self.cellSize / 2 * 8, cable_h_num + 1)
+        xGrid = np.linspace(self.leftPos, self.leftPos + self.width * self.cellSize, cable_w_num * 2 + 1)
+        yGrid = np.linspace(self.topPos, self.topPos - self.height * self.cellSize, cable_h_num * 2 + 1)
         # idw算法分析
-        idw = IDW(xGrid, yGrid, x, y, z, radius, n)  # 实例化算法对象
+        idw = IDW(xGrid, yGrid, x, y, z, radius, n, frame0)  # 实例化算法对象
         z0 = idw.getVFractalDimension()  # 网格的拟合分维值
         # 数据对齐
         self.X0, self.Y0 = np.meshgrid(xGrid, yGrid)
@@ -400,7 +398,7 @@ class PublicMember:
         showinfo('CscsGIS',
                  'Author：Hao Fang\n'
                  'Instructor：Yue Liu\n'
-                 'Version：1.2.4\n'
+                 'Version：1.2.5\n'
                  'Name：ConstructSystemComplexitySimulation')
 
 

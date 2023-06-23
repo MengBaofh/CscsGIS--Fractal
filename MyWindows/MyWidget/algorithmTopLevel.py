@@ -30,7 +30,8 @@ class AlgorithmParaTop(Toplevel):
     def setParaTop(self):
         self.title(f'{self.algorithm}参数设置')
         self.iconbitmap('MyImage/earth.ico')
-        self.geometry(f'{self.width}x{self.height}+500+200')
+        self.geometry(f'{self.width}x{self.height}')
+        self.attributes('-topmost', 'true')  # 保持窗口最上
 
     def setLabelEntry(self):
         n = len(self.vars)

@@ -52,7 +52,7 @@ class StartButton(CustomButton):
 
     def __init__(self, master):
         super().__init__(master, 'MyImage/start.png',
-                         lambda: AlgorithmParaTop({'搜索半径(点数)': 15, '幂': 2}, 'IDW', master, pm.startAnaThread))
+                         lambda: AlgorithmParaTop({'搜索半径(点数)': 12, '幂': 2}, 'IDW', master, pm.startAnaThread))
 
 
 class ShowButton(CustomButton):

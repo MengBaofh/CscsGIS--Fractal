@@ -3,7 +3,7 @@ import numpy as np
 
 class IDW:
     def __init__(self, xGrid: tuple, yGrid: tuple, sample_point_X: tuple, sample_point_Y: tuple,
-                 fractalDimension: list, radius: int, n: int):
+                 fractalDimension: list, radius: int, n: int, frame0):
         """
         :param xGrid: 待拟合网格点群的x坐标群
         :param yGrid: 待拟合网格点群的y坐标群
@@ -13,6 +13,7 @@ class IDW:
         :param radius: 搜索半径
         :param n: 幂
         """
+        self.frame0 = frame0
         self.xGrid = xGrid
         self.yGrid = yGrid
         self.sample_point_X = sample_point_X
@@ -73,7 +74,8 @@ class IDW:
         dRec_list = 1 / np.array(dSqrt_list)  # 距离平方的倒数list
         dSum = np.sum(dRec_list)  # 倒数平方的和
         weight_list = np.array(dRec_list) / dSum  # 权重list
-        D = np.sum(self.cal_D_byWeight(weight_list, D_list))  # 计算的分维值
+        # 若插值点与样本点刚好一致（距离为0），则直接取样本点的分维值
+        D = np.sum(self.cal_D_byWeight(weight_list, D_list)) if dSqrt_list[0] else D_list[0]
         return D
 
     def start(self):
@@ -81,4 +83,11 @@ class IDW:
         启动算法
         :return:
         """
-        self.__vFractalDimension = [self.calculate_D(xi, yi) for yi in self.yGrid for xi in self.xGrid]
+        i = 0
+        self.frame0.pBar['maximum'] = len(self.sample_point_X) * len(self.sample_point_Y)
+        for yi in self.yGrid:
+            for xi in self.xGrid:
+                self.__vFractalDimension.append(self.calculate_D(xi, yi))
+                self.frame0.pBar['value'] = i
+                self.frame0.pBar.update()
+                i += 1
